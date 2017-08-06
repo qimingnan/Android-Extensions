@@ -6,6 +6,7 @@ import android.os.Build;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.inputmethod.InputMethodManager;
 
@@ -60,7 +61,7 @@ public final class KeyboardUtils {
             View decorView = viewProvider.getDecorView();
             View contentView = viewProvider.getContentView();
 
-            if (decorView == null || contentView == null) return;
+            if (decorView == null) return;
 
             // Rect will have values of the visible area left
             Rect rect = new Rect();
@@ -68,20 +69,31 @@ public final class KeyboardUtils {
             decorView.getWindowVisibleDisplayFrame(rect);
 
             // Get Screen height and calculate the difference between the visble and hidden areas
-            int height = contentView.getHeight();
-            int diff = height - rect.bottom;
+            int height = decorView.getContext().getResources().getDisplayMetrics().heightPixels;
+            boolean keyboardUp = height - rect.bottom != 0;
 
             // If the useable screen height differs from the total screen height, assume the
             // virtual keyboard is visible.
+            if (contentView != null) {
 
-            // Check if the padding was not previously set on the contentView, if not, add it
+                int viewDiff = contentView.getHeight();
+                int bottomPadding = contentView.getPaddingBottom();
 
-            int padding = contentView.getPaddingBottom();
+                ViewGroup.LayoutParams params = contentView.getLayoutParams();
 
-            if (diff != 0 && padding != diff) contentView.setPadding(0, 0, 0, diff);
+                if (params instanceof ViewGroup.MarginLayoutParams) {
+                    ViewGroup.MarginLayoutParams marginParams = (ViewGroup.MarginLayoutParams) params;
+                    viewDiff = viewDiff + marginParams.topMargin + marginParams.bottomMargin;
+                }
+
+                viewDiff -= rect.bottom;
+
+                // Check if the padding was not previously set on the contentView, if not, add it
+                if (keyboardUp && bottomPadding != viewDiff) contentView.setPadding(0, 0, 0, viewDiff);
 
                 // Reset padding
-            else if (padding != 0) contentView.setPadding(0, 0, 0, 0);
+                else if (!keyboardUp && bottomPadding != 0) contentView.setPadding(0, 0, 0, 0);
+            }
         }
     };
 

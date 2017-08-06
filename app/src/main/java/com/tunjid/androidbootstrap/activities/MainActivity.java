@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 
 import com.tunjid.androidbootstrap.R;
 import com.tunjid.androidbootstrap.baseclasses.AppBaseActivity;
+import com.tunjid.androidbootstrap.fragments.FullScreenFragment;
 import com.tunjid.androidbootstrap.fragments.ImageDetailFragment;
 import com.tunjid.androidbootstrap.fragments.RouteFragment;
 
@@ -25,7 +26,9 @@ public class MainActivity extends AppBaseActivity implements OnApplyWindowInsets
         @Override
         public void onFragmentViewCreated(FragmentManager fm, Fragment f, View v, Bundle savedInstanceState) {
             String tag = f.getTag();
-            boolean isFullscreenFragment = tag != null && tag.contains(ImageDetailFragment.class.getSimpleName());
+            boolean isFullscreenFragment = tag != null
+                    && (tag.contains(ImageDetailFragment.class.getSimpleName())
+                    || tag.contains(FullScreenFragment.class.getSimpleName()));
 
             insetView.setVisibility(isFullscreenFragment ? View.GONE : View.VISIBLE);
 

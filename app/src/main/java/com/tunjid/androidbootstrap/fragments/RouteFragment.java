@@ -51,6 +51,7 @@ public class RouteFragment extends AppBaseFragment
         routes.add(new Route(NsdScanFragment.class.getSimpleName(), formatRoute(R.string.route_nsd_scan)));
         routes.add(new Route(HidingViewFragment.class.getSimpleName(), formatRoute(R.string.route_hiding_view)));
         routes.add(new Route(SpanbuilderFragment.class.getSimpleName(), formatRoute(R.string.route_span_builder)));
+        routes.add(new Route(FullScreenFragment.class.getSimpleName(), formatRoute(R.string.route_span_builder)));
 
         RecyclerView recyclerView = rootView.findViewById(R.id.recycler_view);
 
@@ -76,6 +77,9 @@ public class RouteFragment extends AppBaseFragment
         }
         else if (route.getDestination().equals(SpanbuilderFragment.class.getSimpleName())) {
             showFragment(SpanbuilderFragment.newInstance());
+        }
+        else if (route.getDestination().equals(FullScreenFragment.class.getSimpleName())) {
+            showFragment(FullScreenFragment.newInstance());
         }
     }
 
