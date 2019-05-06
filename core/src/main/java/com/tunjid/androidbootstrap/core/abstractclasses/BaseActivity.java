@@ -35,7 +35,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         // Check if this activity has a main fragment container viewgroup
         View mainFragmentContainer = findViewById(mainContainerId);
 
-        if (mainFragmentContainer == null || !(mainFragmentContainer instanceof ViewGroup)) {
+        if (!(mainFragmentContainer instanceof ViewGroup)) {
             throw new IllegalArgumentException("This activity must include a ViewGroup with id '" +
                     getResources().getResourceName(mainContainerId) +
                     "' for dynamically added fragments");
